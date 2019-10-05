@@ -12,14 +12,9 @@ func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
 
-	author := datasource.GetAuthorFromID(vars["id"])
-	title := datasource.GetTitleFromID(vars["id"])
-	article := datasource.GetArticleFromID(vars["id"])
-	inDraft := datasource.GetInDraftFromID(vars["id"])
-	date := datasource.GetDateFromID(vars["id"])
-	public := datasource.GetPublicFromID(vars["id"])
+	response := datasource.GetEverythingFromID(vars["id"])
 
-	fmt.Fprintf(writer, "Argument: %v", vars["id"])
+	fmt.Fprintf(writer, response)
 }
 
 func main() {
