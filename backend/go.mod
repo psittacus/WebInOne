@@ -1,3 +1,5 @@
-module WebInOneBackend
+module github.com/psittacus/WebInOne/backend
 
 go 1.13
+
+require github.com/mattn/go-sqlite3 v1.11.0
