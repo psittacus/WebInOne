@@ -1,10 +1,10 @@
 package main
 
 import (
-	"WebInOne.backend.datasource"
 	"fmt"
+	"github.com/psittacus/WebInOne/backend/datasource"
 )
 
 func main() {
-	fmt.Get
+	fmt.Println(datasource.GetArticleWithID("ID"))
 }
