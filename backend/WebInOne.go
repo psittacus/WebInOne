@@ -8,6 +8,24 @@ import (
 	"net/http"
 )
 
+func DateHandler(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	writer.WriteHeader(http.StatusOK)
+
+	response := datasource.GetEverythingFromAuthor(vars["date"])
+
+	fmt.Fprintf(writer, response)
+}
+
+func AuthorHandler(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	writer.WriteHeader(http.StatusOK)
+
+	response := datasource.GetEverythingFromAuthor(vars["author"])
+
+	fmt.Fprintf(writer, response)
+}
+
 func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
@@ -23,6 +41,9 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/post/{id:[0-9]+}", PostIDHandler).
 		Methods("GET")
-	http.Handle("/", router)
+	router.HandleFunc("/date/{date:[1-31].[1-12].[2019-2119]", DateHandler).
+		Methods("GET")
+	router.HandleFunc("/author/{author}", AuthorHandler).
+		Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
