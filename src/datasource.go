@@ -1,7 +1,16 @@
-package main
+package datasource
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+	_ "github.com/mattn/go-sqlite3"
+)
 
-func getArticleWithID(id string) string {
+const (
+	tableName    = "blogTable"
+	databasePath = "."
+)
+
+func GetArticleWithID(id string) string {
 	return "das ist unser toller artikel!"
 }
