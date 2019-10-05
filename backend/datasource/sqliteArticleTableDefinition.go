@@ -1,14 +1,16 @@
 package datasource
 
+import "fmt"
+
 type table struct {
-	tableName   string
-	definitions [][]string
+	name              string
+	columnDefinitions [][]string
 }
 
 var (
 	sqliteArticleTableDefinition = table{
-		tableName: "DataBlog",
-		definitions: [][]string{
+		name: "DataBlog",
+		columnDefinitions: [][]string{
 			{"id", "INTEGER PRIMARY KEY"},
 			{"author", "TEXT NOT NULL"},
 			{"title", "TEXT NOT NULL"},
@@ -18,9 +20,13 @@ var (
 			{"public", "INTEGER DEFAULT 1"}}}
 )
 
-func (t *table) GetDefinition() (string){
-	var ret string
-	for _, def := range table.defintions[1:] {
-		ret +=
+// TODO: test if statement creates database
+func (t *table) getSqliteTableCreationStatement() string {
+	tableDefinition := fmt.Sprintf("CREATE TABLE IF NOT EXIST %s (", t.name)
+	for _, def := range t.columnDefinitions {
+		tableDefinition += fmt.Sprintf("%s %s,", def[0], def[1])
 	}
+
+	tableDefinition += ")"
+	return tableDefinition
 }

@@ -1,10 +1,11 @@
 package datasource
 
 import (
+	"database/sql"
 	"testing"
-	"fmt"
 )
 
-func TestGetDefinitionReturnsValidSqliteStatement(t *testing.T) {
-	fmt.
+func TestCreateDatabase(t *testing.T) {
+	_, _ = datasource.setupDatasource()
+
 }
