@@ -2,6 +2,6 @@ package main
 
 import "fmt"
 
-func main() {
-	fmt.Println("vim-go")
+func getArticleWithID(id string) string {
+	return "das ist unser toller artikel!"
 }
