@@ -2,43 +2,45 @@ package datasource
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
 )
-
-var (
-	dataTable *sql.DB
-)
-
-func init() {
-	dataTable, err := setupDatasource()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 const (
-	databasePath = "."
+	dataRootName       = "DataBlog"
+	sqliteExtension    = "sqlite3"
+	sqliteDatabasePath = "./" + dataRootName + sqliteExtension
 )
 
-func GetArticleWithID(id string) string {
+type Source interface {
+	Setup() error
+	// GetArticleWithId(id string) Article
+	GetArticleWithId(id string) string
+}
+
+type sqlite struct {
+	path string
+}
+
+func NewSqlite() Source {
+	return &sqlite{path: sqliteDatabasePath}
+}
+
+func (s *sqlite) GetArticleWithId(id string) string {
 	return "das ist unser toller artikel!"
 }
 
-func setupDatasource() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", fmt.Sprintf("%s/%s", databasePath, sqliteArticleTableDefinition.name))
+func (s *sqlite) Setup() error {
+	db, err := sql.Open("sqlite3", s.path)
 	if err != nil {
-		return nil, err
+		return err
+	}
+	defer db.Close()
+
+	statement, err := db.Prepare(sqliteArticleTableDefinition.getSqliteTableCreationStatement())
+	if err != nil {
+		return err
 	}
 
-	statement := sqliteArticleTableDefinition.getSqliteTableCreationStatement()
-
-	s, err := db.Prepare(statement)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = s.Exec()
-	return db, err
+	_, err = statement.Exec()
+	return err
 }

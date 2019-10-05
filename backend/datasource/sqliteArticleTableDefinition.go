@@ -20,11 +20,13 @@ var (
 			{"public", "INTEGER DEFAULT 1"}}}
 )
 
-// TODO: test if statement creates database
 func (t *table) getSqliteTableCreationStatement() string {
-	tableDefinition := fmt.Sprintf("CREATE TABLE IF NOT EXIST %s (", t.name)
-	for _, def := range t.columnDefinitions {
-		tableDefinition += fmt.Sprintf("%s %s,", def[0], def[1])
+	tableDefinition := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (", t.name)
+	if len(t.columnDefinitions) > 0 {
+		tableDefinition += fmt.Sprintf("%s %s", t.columnDefinitions[0][0], t.columnDefinitions[0][1])
+		for _, def := range t.columnDefinitions[1:] {
+			tableDefinition += fmt.Sprintf(", %s %s", def[0], def[1])
+		}
 	}
 
 	tableDefinition += ")"
