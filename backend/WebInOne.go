@@ -8,6 +8,15 @@ import (
 	"net/http"
 )
 
+func DateBeforeHandler(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	writer.WriteHeader(http.StatusOK)
+
+	response := datasource.GetEverythingFromAuthor(vars["date"])
+
+	fmt.Fprintf(writer, response)
+}
+
 func DateHandler(writer http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
@@ -40,6 +49,8 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/post/{id:[0-9]+}", PostIDHandler).
+		Methods("GET")
+	router.HandleFunc("/date/before/{date:[1-31].[1-12].[2019-2119]}", DateBeforeHandler).
 		Methods("GET")
 	router.HandleFunc("/date/{date:[1-31].[1-12].[2019-2119]", DateHandler).
 		Methods("GET")
