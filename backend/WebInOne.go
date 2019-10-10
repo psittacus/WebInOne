@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+/*
 func DateBeforeHandler(writer http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
@@ -34,12 +35,12 @@ func AuthorHandler(writer http.ResponseWriter, req *http.Request) {
 
 	fmt.Fprintf(writer, response)
 }
-
+*/
 func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
-
-	response := datasource.GetEverythingFromID(vars["id"])
+	datasource.Test()
+	response := datasource.GetArticleWithId(vars["id"])
 
 	fmt.Fprintf(writer, response)
 }
@@ -49,11 +50,12 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/post/{id:[0-9]+}", PostIDHandler).
 		Methods("GET")
-	router.HandleFunc("/date/before/{date:[1-31].[1-12].[2019-2119]}", DateBeforeHandler).
-		Methods("GET")
-	router.HandleFunc("/date/{date:[1-31].[1-12].[2019-2119]", DateHandler).
-		Methods("GET")
-	router.HandleFunc("/author/{author}", AuthorHandler).
-		Methods("GET")
+		/*	router.HandleFunc("/date/before/{date:[1-31].[1-12].[2019-2119]}", DateBeforeHandler).
+				Methods("GET")
+			router.HandleFunc("/date/{date:[1-31].[1-12].[2019-2119]", DateHandler).
+				Methods("GET")
+			router.HandleFunc("/author/{author}", AuthorHandler).
+				Methods("GET")
+		*/
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

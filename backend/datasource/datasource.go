@@ -22,6 +22,10 @@ type sqlite struct {
 	path string
 }
 
+func Testlol() {
+	fmt.Println("huhuhu")
+}
+
 type Article struct {
 	Id      int
 	Author  string
