@@ -46,7 +46,6 @@ func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 
 func main() {
 	//	fmt.Println(datasource.GetArticleWithID("ID"))
-
 	router := mux.NewRouter()
 	router.HandleFunc("/post/{id:[0-9]+}", PostIDHandler).
 		Methods("GET")
