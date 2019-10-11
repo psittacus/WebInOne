@@ -22,10 +22,6 @@ type sqlite struct {
 	path string
 }
 
-func Testlol() {
-	fmt.Println("huhuhu")
-}
-
 type Article struct {
 	Id      int
 	Author  string
@@ -40,8 +36,12 @@ func NewSqlite() Source {
 	return &sqlite{path: sqliteDatabasePath}
 }
 
-func (s *sqlite) GetArticleWithId(id string) string {
-	db, err := sql.Open("sqlite3", s.path)
+func GAWI(id string) string {
+	return GetArticleWithId(id)
+}
+
+func GetArticleWithId(id string) string {
+	db, err := sql.Open("sqlite3", sqlite.path)
 	if err != nil {
 		return ""
 	}

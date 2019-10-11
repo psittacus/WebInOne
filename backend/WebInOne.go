@@ -37,9 +37,9 @@ func AuthorHandler(writer http.ResponseWriter, req *http.Request) {
 }
 */
 func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
+	datasource := Datasource{}
 	vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
-	datasource.Test()
 	response := datasource.GetArticleWithId(vars["id"])
 
 	fmt.Fprintf(writer, response)
