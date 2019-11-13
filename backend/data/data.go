@@ -32,6 +32,31 @@ type sqlite struct {
 	path string
 }
 
+//my attempt of a simple insert into sql:
+
+func InsertNewArticle(id int, author string, title string, content string, indraft bool, date string, public bool) (bool, error) {
+	db, err := sql.Open("sqlite3", sqliteDatabasePath)
+	if err != nil {
+		return false, err
+	}
+	defer db.Close()
+
+	tx, err := db.Begin()
+	if err != nil {
+		return false, err
+	}
+	stmt, err := tx.Prepare("insert into " + tableName + "(id, author, title, content, indraft, date, public) values(?,?,?,?,?,?,?)")
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id, author, title, content, indraft, date, public)
+	if err != nil {
+		return false, err
+	}
+
+	tx.Commit()
+	return true, nil
+}
+
 // Tries to create a new sqlite datasource. If it already exists
 func NewSqlite() (Source, error) {
 	sqlDb := &sqlite{path: sqliteDatabasePath}
@@ -43,7 +68,7 @@ func NewSqlite() (Source, error) {
 }
 
 // Generic function to get an array of matching articles.
-// Fires to sql statements. One to get the count of matching rows and the second one to write to the array.
+// Fires two sql statements. One to get the count of matching rows and the second one to write to the array.
 func (s *sqlite) GetArticleWhere(typ ArticleType, val string) ([]article, error) {
 	rows, err := s.querySqlite(p_ArticleBy(typ, val))
 	defer rows.Close()

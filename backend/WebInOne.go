@@ -42,8 +42,16 @@ func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 	// vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
 	// response := datasource.GetArticleWithId(vars["id"])
+	worked, err := data.InsertNewArticle(1, "Flo", "Test", "TestContent", false, "13.11.2019", true)
 
-	fmt.Fprintf(writer, "<response nimpl>")
+	if err != nil {
+		log.Fatal(err)
+	}
+	if worked {
+		fmt.Fprintf(writer, "Hat funktioniert!")
+	} else {
+		fmt.Fprintf(writer, "Hat nicht funktioniert!")
+	}
 }
 
 func main() {
