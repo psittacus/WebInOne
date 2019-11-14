@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/psittacus/WebInOne/backend/data"
 	"log"
@@ -42,8 +41,9 @@ func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 	// vars := mux.Vars(req)
 	writer.WriteHeader(http.StatusOK)
 	// response := datasource.GetArticleWithId(vars["id"])
-	worked, err := data.InsertNewArticle(1, "Flo", "Test", "TestContent", false, "13.11.2019", true)
-
+	// worked, err := data.InsertNewArticle(1, "Flo", "Test", "TestContent", false, "13.11.2019", true)
+	data.GetArticleByID(1)
+/*
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,6 +52,7 @@ func PostIDHandler(writer http.ResponseWriter, req *http.Request) {
 	} else {
 		fmt.Fprintf(writer, "Hat nicht funktioniert!")
 	}
+*/
 }
 
 func main() {

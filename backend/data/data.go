@@ -3,6 +3,8 @@ package data
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
+	"fmt"
 )
 
 const (
@@ -31,6 +33,31 @@ type Source interface {
 type sqlite struct {
 	path string
 }
+
+//simply get an article by id
+
+func GetArticleByID(id int) (author string, title string, content string, indraft bool, date string, public bool) {
+	db, err := sql.Open("sqlite3", sqliteDatabasePath)
+	if err != nil {
+		return "ERROR","","",false,"",false
+	}
+	defer db.Close()
+
+	rows, err := db.Query("select author, title, content, indraft, date, public from " + tableName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&author, &title, &content, &indraft, &date, &public)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(author, title, content, indraft, date, public)
+	}
+	return author,title,content,indraft,date,public
+}
+
 
 //my attempt of a simple insert into sql:
 
